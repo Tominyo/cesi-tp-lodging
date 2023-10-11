@@ -120,7 +120,8 @@ module.exports.logout_get = (req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     */
 
-    res.redirect("http://localhost:3000/");
+    res.json({ message: 'Déconnexion réussi.' });
+    //res.redirect("http://localhost:3000/");
     //next()
 }
 

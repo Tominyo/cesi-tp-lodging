@@ -35,7 +35,7 @@ const navigate = useNavigate()
       <TableContainer component={Paper}>
             <Table sx={{ minWidth: 150 }} aria-label="simple table">
               <TableHead>
-                <TableRow>
+                <TableRow className='bg-blanchedalmond'>
                   <TableCell>Nom du Logement</TableCell>
                   <TableCell align="right">Type</TableCell>
                   <TableCell align="right">Couleur</TableCell>
@@ -63,7 +63,7 @@ const navigate = useNavigate()
                         <TableCell align="right">T1</TableCell>
                         <TableCell align="right"><div className={`color-block`} style={{backgroundColor:row.color["hex"]}} ></div></TableCell>
                         <TableCell align="right">{OptionsToString(row.options)}</TableCell>
-                        <TableCell align="right">Oui</TableCell>
+                        <TableCell align="right">{row.isAvailable ? "Oui" : "Non"}</TableCell>
                       </TableRow>
                 
                       

@@ -120,22 +120,27 @@ export default function HomeScreen(props) {
             <div class="container">
               <div class="row">
                 <div class="col-md-8">
-                  <h3 class="center-h">Les Réservations</h3>
+                  <h3 class="center-h">Les Logements</h3>
 
-                    <Paper
-                        component="form"
-                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', height: "70px"}}
-                        >
-                        <InputBase
-                            sx={{ ml: 1, flex: 1 }}
-                            placeholder="Quel logement recherchez vous ?"
-                            inputProps={{ 'aria-label': 'Quel logement recherchez vous ?' }}
-                            onChange={inputHandler}
-                        />
-                        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-                            <SearchIcon />
-                        </IconButton>
-                    </Paper>
+                  {
+                    /*
+                      <Paper
+                          component="form"
+                          sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', height: "70px"}}
+                          >
+                          <InputBase
+                              sx={{ ml: 1, flex: 1 }}
+                              placeholder="Quel logement recherchez vous ?"
+                              inputProps={{ 'aria-label': 'Quel logement recherchez vous ?' }}
+                              onChange={inputHandler}
+                          />
+                          <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                              <SearchIcon />
+                          </IconButton>
+                      </Paper>
+                    */
+                  }
+
 
                     <div id='wrapper-flex'>
                         <div id='sidebar-section'>
@@ -147,9 +152,9 @@ export default function HomeScreen(props) {
                                 name="radio-buttons-group"
                                 onChange={onRadioValueChange}
                               >
-                                <FormControlLabel value="huey" control={<Radio />} label="" className='huey' />
-                                <FormControlLabel value="dewey" control={<Radio />} label="" className='dewey'/>
-                                <FormControlLabel value="saumon" control={<Radio />} label="" className='saumon'/>
+                                <div className='flex-row'><FormControlLabel value="huey" control={<Radio />} label="" /><div className='huey radio-btn'></div></div>
+                                <div className='flex-row'><FormControlLabel value="dewey" control={<Radio />} label="" /><div className='dewey radio-btn'></div></div>
+                                <div className='flex-row'><FormControlLabel value="salmon" control={<Radio />} label="" /><div className='salmon radio-btn'></div></div>
                                 <FormControlLabel value="all" control={<Radio />} label="Tous" />
                               </RadioGroup>
                             </FormControl>

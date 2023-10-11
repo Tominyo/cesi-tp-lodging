@@ -12,7 +12,7 @@ import {
 import ContactScreen from "./views/ContactScreen";
 import LodgingScreen from "./views/LodgingScreen";
 import Custom404Screen from "./views/Custom404Screen";
-import Header from "./components/Header";
+import Home from "./components/Home";
 import Cookies from 'js-cookie';
 import { getCookie } from "./utils/Utils";
 import AdminScreen from "./views/AdminScreen";
@@ -38,32 +38,27 @@ function App() {
     //console.log(username)
     //setUsername(Cookies.get('username'))
 
-    if(!isLogin)
-    {
+  
       if(Cookies.get('userID'))
       {
         console.log(getCookie("userID"))
         getUserById(Cookies.get('userID'))
         setIsLogin(true);
+
+        if(Cookies.get('jwt'))
+        {
+          setIsAdmin(true)
+        }
+        else
+        {
+          setIsAdmin(false)
+        }
       }
       else
       {
         setCurrentUser(null)
         setIsLogin(false);
       }
-
-    }
-    
-    
-    if(Cookies.get('jwt'))
-    {
-      setIsAdmin(true)
-    }
-    else
-    {
-      setIsAdmin(false)
-    }
-    
 
     }, [])
 
@@ -151,7 +146,7 @@ function App() {
        <UserContext.Provider value={currentUser}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Header />}>
+            <Route path="/" element={<Home />}>
                 <Route index element={<HomeScreen />} />
                 <Route path="login" element={<LoginScreen/>} />
                 <Route path="contact" element={<ContactScreen />} />

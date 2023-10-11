@@ -57,7 +57,7 @@ header {
   height: 120px;
   display: flex;
   padding: 2px;
-  background-color:teal;
+  background-color: skyblue;
 
   box-shadow:  3px 3px 3px 3px rgba(0,0,0,0.5)
 }
@@ -67,7 +67,7 @@ header ul li {
 }
 
 footer {
-  background-color:teal;
+  background-color:skyblue;
   height: 100px;
   border: solid 1px green;
   padding: 2px;
@@ -395,7 +395,8 @@ PORTFOLIO
     margin-bottom: 30px;
     color: coral;
     font-family:"Dancing Script";
-      font-size: 7em;
+    font-size: 7em;
+    text-decoration-line: underline;
   }
   .figure{
     color: white;
@@ -673,7 +674,7 @@ ul li {
 }
 
 #lodging-list {
-  margin: 20px;
+  
 }
 
 .color-block {
@@ -682,7 +683,7 @@ ul li {
   float: right;
 }
 
-.saumon {
+.salmon {
   background-color: #fa8072;
 }
 
@@ -714,7 +715,7 @@ ul li {
 
 .table-elem:hover{
   cursor: pointer;
-  background-color:#fa8072;
+  background-color:#61dafb
 }
 
 /**###########
@@ -819,10 +820,7 @@ img:hover {
 
 img:active {
   transform: scale(1.1, 1.1);
-  filter: 
-    hue-rotate(220deg)
-    drop-shadow(2px 4px 4px #222)
-    sepia(0.3);
+ 
 }
 
 .breadcrumb-back-btn {
@@ -832,4 +830,39 @@ img:active {
 .center-x {
   display: flex;
   justify-content: center;
+}
+
+.center-xy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radio-btn {
+  height: 20px;
+  width: 20px;
+}
+
+.card-container {
+  
+}
+
+.px-10 {
+  padding: 10px;
+}
+
+.bg-blanchedalmond {
+  background-color: blanchedalmond;
 }

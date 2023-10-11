@@ -60,3 +60,9 @@
     gap: 8px;
     margin: 10px;
   }
+
+  .flex-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }

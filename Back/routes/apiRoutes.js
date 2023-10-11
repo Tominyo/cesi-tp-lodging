@@ -20,15 +20,24 @@ router.post('/api/logements', async (req, res) => {
     console.log(name)
     console.log(colorId)
     console.log(options)
+    let optionsList = []
 
+    options.forEach(element => {
+      
+      optionsList.push({id: "tv"})
+      console.log(element)
+    });
+
+    let options2 = [
+      {id: "tv"},
+      {id: "internet"}
+    ]
     const lodging = await prisma.lodging.create({
       data: {
         name,
         colorId,
         options: {
-          connect: {
-           id: "tv"
-          }
+          connect: options
         }
       },
     });
@@ -42,7 +51,7 @@ router.post('/api/logements', async (req, res) => {
 // Modifier un logement
 router.put('/api/logements/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, colorId, options } = req.body;
+  const { name, colorId, options, isAvailable } = req.body;
 
   const options2 = {
     "id": "internet",
@@ -50,27 +59,51 @@ router.put('/api/logements/:id', async (req, res) => {
     "isActive": false
   }
 
-  console.log("options belek: ")
-  console.log(options)
+  //console.log("options belek: ")
+  //console.log(options)
 
-  try {
-    const updatedLodging = await prisma.lodging.update({
-      where: { id: Number(id) },
-      data: { 
-        name: name, 
-        colorId: colorId, 
-        options: {
-          disconnect: [{id: "tv"}, {id: "internet"}],
-          connect: options
-        }
-      },
-    });
-    res.json(updatedLodging);
-  } catch (error) {
-    console.log("VOICI LERREUR")
-    console.error(error);
-    res.status(500).json({ error: 'Erreur lors de la modification du logement' });
+  if(name !== undefined && colorId !== undefined && options !== undefined)
+  {
+
+    console.log("modification par un admin")
+    try {
+      const updatedLodging = await prisma.lodging.update({
+        where: { id: Number(id) },
+        data: { 
+          name: name, 
+          colorId: colorId, 
+          isAvailable: isAvailable,
+          options: {
+            disconnect: [{id: "tv"}, {id: "internet"}],
+            connect: options
+          }
+        },
+      });
+      res.json(updatedLodging);
+    } catch (error) {
+      console.log("VOICI LERREUR")
+      console.error(error);
+      res.status(500).json({ error: 'Erreur lors de la modification du logement' });
+    }
+  } else if(isAvailable !== undefined) {
+
+    console.log("modification par le serveur")
+
+    try {
+      const updatedLodging = await prisma.lodging.update({
+        where: { id: Number(id) },
+        data: { 
+          isAvailable: isAvailable
+        },
+      });
+      res.json(updatedLodging);
+    } catch (error) {
+      console.log("VOICI LERREUR")
+      console.error(error);
+      res.status(500).json({ error: 'Erreur lors de la modification du logement' });
+    }
   }
+
 });
 
 // Supprimer un logement
@@ -239,6 +272,63 @@ router.get('/api/logements/filter', async (req, res) => {
   }
 });
 
+// Récupérer tous les réservations
+router.get('/api/reservations', async (req, res) => {
+
+  try {
+    const reservations = await prisma.reservation.findMany({
+
+    });
+    res.writeHead(200, 
+      { 
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin" : "http://localhost:3000",
+        "Access-Control-Allow-Credentials" : true,
+        "Access-Control-Allow-Methods" : "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers" : "Origin, Content-Type, Accept"
+      }
+      );
+    res.end(JSON.stringify(reservations));
+  } catch (error) {
+    console.error(error);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Erreur lors de la récupération des réservations' }));
+  
+  }
+});
+
+
+// Trouver UN utilisateur par son ID
+router.get('/api/reservations/:id', async (req, res) => {
+
+  const { id } = req.params;
+
+  try {
+    const user = await prisma.reservation.findUnique({
+      where: {
+        id: Number(id),
+      },
+      
+    });
+    res.writeHead(200, 
+      { 
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin" : "http://localhost:3000",
+        "Access-Control-Allow-Credentials" : true,
+        "Access-Control-Allow-Methods" : "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers" : "Origin, Content-Type, Accept"
+      }
+      );
+    res.end(JSON.stringify(user));
+  } catch (error) {
+    console.error(error);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Erreur lors de la récupération de l\'utilisateur' }));
+  
+  }
+});
+
+
 // Créer une réservation
 router.post('/api/reservation', async (req, res) => {
   try {
@@ -256,7 +346,7 @@ router.post('/api/reservation', async (req, res) => {
         checkInDate: checkInDate,
         checkOutDate: checkOutDate,
         userId: userId,
-        //lodgingId: lodgingId
+        lodgingId: lodgingId
       },
     });
     res.json(reservation);
@@ -323,7 +413,7 @@ router.post('/auth/register', async (req, res) => {
       res.sendFile(__dirname + '/login.html');
     })
     */
-    res.sendFile(__dirname + '/login.html');
+    //res.sendFile(__dirname + '/login.html');
     
 
   } catch (error) {

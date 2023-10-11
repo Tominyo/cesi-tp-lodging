@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import { Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 import "./LoginScreen.css";
 
@@ -8,6 +11,12 @@ function LoginScreen(props) {
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [pageIndex, setPageIndex] = useState(0)
+  const [open, setOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [severity, setSeverity] = useState("success")
+
+  let timer
 
   // User Login info
   const database = [
@@ -26,6 +35,18 @@ function LoginScreen(props) {
     pass: "invalid password"
   };
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+  
   const handleSubmit = (event) => {
     //Prevent page reload
     event.preventDefault();
@@ -87,9 +108,20 @@ function LoginScreen(props) {
         )
   }
 
+  const showAlert = (content, type="success") => {
+
+    setAlertMessage(content)
+    setSeverity(type)
+    handleClick()
+  }
+
   // JSX code for login form
-  const renderForm = (
-    <div className="form">
+  const renderFormLogin = (
+
+    <div className="app">
+    <div className="login-form">
+      <div className="title">Connexion</div>
+      <div className="form">
       <form action="http://localhost:3001/auth/login" method="post">
         <div className="input-container">
           <label>E-mail </label>
@@ -104,24 +136,73 @@ function LoginScreen(props) {
         <div className="button-container">
           <input type="submit" />
         </div>
+
+        <div className="button-container" style={{marginTop: "20px"}}>
+          <Button title="Pas de compte ? Inscrivez vous ici" onClick={() => {setPageIndex(1)}}>Pas de compte ? Inscrivez vous ici</Button>
+        </div>
+
+      </form>
+     
+    </div>
+      {/*isSubmitted ? <div>User is successfully logged in</div> : renderForm*/}
+    </div>
+    
+  </div>
+
+  );
+
+  const renderFormRegister = (
+    <div className="app">
+    <div className="login-form">
+      <div className="title">INSCRIPTIONS</div>
+      <div className="form">
+      <form action="http://localhost:3001/auth/register" method="post">
+        <div className="input-container">
+          <label>E-mail </label>
+          <input type="text" name="email" id="email" required />
+          {renderErrorMessage("uname")}
+        </div>
+        <div className="input-container">
+          <label>Username </label>
+          <input type="text" name="username" id="username" required />
+          {renderErrorMessage("uname")}
+        </div>
+        <div className="input-container">
+          <label>Password </label>
+          <input type="password" name="password" id="password" required />
+          {renderErrorMessage("pass")}
+        </div>
+        <div className="button-container">
+          <input type="submit" />
+        </div>
+        <div className="button-container" style={{marginTop: "20px"}}>
+          <Button title="Vous avez déjà un compte ? connectez vous ici" onClick={() => {setPageIndex(0)}}>Vous avez déjà un compte ? connectez vous ici</Button>
+        </div>
       </form>
     </div>
+      {/*isSubmitted ? <div>User is successfully logged in</div> : renderForm*/}
+    </div>
+  </div>
   );
 
   return (
     <>
     
-    <main>
-      <div className="app">
-        <div className="login-form">
-          <div className="title">Connexion</div>
-          {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
-        </div>
-      </div>
+      <main>
+          {
+          pageIndex === 0
+            ? renderFormLogin
+            : renderFormRegister
+          }
+      </main>
 
-    </main>
+      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+              {alertMessage}
+            </Alert>
+        </Snackbar>
 
-</>
+    </>
   );
 }
 

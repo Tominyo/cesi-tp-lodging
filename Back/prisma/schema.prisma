@@ -35,8 +35,8 @@ model Reservation {
   // Relation ManyToMany avec les options
   //options      Option[]
   // Relation OneToOne avec le logement
-  //lodging      Lodging? @relation(fields: [lodgingId], references: [id])
-  //lodgingId    Int? @unique
+  lodging      Lodging? @relation(fields: [lodgingId], references: [id])
+  lodgingId    Int? @unique
 }
 
 model Color {
@@ -65,10 +65,11 @@ model Option {
 model Lodging {
   id        Int      @id @default(autoincrement())
   name      String?
+  isAvailable Boolean @default(true)
   // Ajoutez d'autres champs de logement si nécessaire
 
   // Relation OneToOne avec la réservation
-  //reservation Reservation?
+  reservation Reservation?
 
   // Relation ManyToMany avec les options
   // options OptionsInLodgings[]

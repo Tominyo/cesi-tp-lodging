@@ -1,19 +1,71 @@
 //const users = [{id: 1, nom: "Jean", prenom: "Pierre", age:  25}]
+
 var lodgings = []
 const validateButton = document.getElementById("validate")
 const homeSectionButton = document.getElementById("home-section-btn")
 const lodgingSectionButton = document.getElementById("lodging-section-btn")
 const userSectionButton = document.getElementById("user-section-btn")
+const reservationSectionButton = document.getElementById("reservation-section-btn")
+
+const homeSection = document.getElementById("home-section")
+const lodgingSection = document.getElementById("lodging-section")
+const userSection = document.getElementById("user-section")
+const reservationSection = document.getElementById("reservation-section")
+
+const modalClose = document.getElementById('modal-close')
+const modal = document.getElementById('modal')
+const modalTitle = document.getElementById("modal-title")
+const modalContent = document.getElementById("modal-content")
 
 validateButton.addEventListener("click", addLodging);
-homeSectionButton.addEventListener("click", switchHomeTab);
-lodgingSectionButton.addEventListener("click", switchLodgingTab)
+homeSectionButton.addEventListener("click", switchTab);
+lodgingSectionButton.addEventListener("click", switchTab);
+userSectionButton.addEventListener("click", switchTab);
+reservationSectionButton.addEventListener("click", switchTab)
+
+homeSectionButton.index = 0
+lodgingSectionButton.index = 1
+userSectionButton.index = 2
+reservationSectionButton.index = 3
+
+modalClose.addEventListener('click', function(e) {
+    modal.style.display = 'none'
+  })
+
+let modalAlreadyShowed = false
 
 //lodgingSectionButton.addEventListener("click", () => switchTab(1))
 //userSectionButton.addEventListener("click", () => switchTab(2))
 
 //switchTab(0);
 showAllLodgings();
+showAllUsers();
+showAllReservations();
+
+function showModal(title, content, auto) {
+    if( ! modalAlreadyShowed ) {
+        
+        //document.getElementById("modal-title").innerHTML = "SALUT"
+        modalTitle.innerHTML = title
+        modalContent.innerHTML = content
+
+        setTimeout( () => {
+            modal.style.display = 'block'
+            modalAlreadyShowed = false
+
+            
+            setTimeout( () => {
+                if(auto)
+                {
+                    modal.style.display = 'none'
+                }
+            }, 3000 )
+ 
+        }, 1000 )
+       
+        modalAlreadyShowed = true
+        }
+}
 
 function updateOrDeleteLodging() {
     const deleteButtons = document.querySelectorAll(".Supprimer")
@@ -27,35 +79,51 @@ function updateOrDeleteLodging() {
     })
 }
 
-/*
-function switchTab(e, index) {
+
+function switchTab(e) {
     e.preventDefault()
 
-    const homeSection = document.getElementById("home-section")
-    const lodgingSection = document.getElementById("lodging-section")
+    getLodgingNameById(1)
 
-    //let index = 1
+    let index = e.currentTarget.index;
 
     switch(index) {
         case 0:
-            homeSection.classList.add("selected-tab")
             homeSection.classList.remove("hidden")
             
-            lodgingSection.classList.remove("selected-tab")
             lodgingSection.classList.add("hidden")
+            userSection.classList.add("hidden")
+            reservationSection.classList.add("hidden")
             break;
 
         case 1:
-            homeSection.classList.remove("selected-tab")
             homeSection.classList.add("hidden")
             
-            lodgingSection.classList.add("selected-tab")
             lodgingSection.classList.remove("hidden")
+            userSection.classList.add("hidden")
+            reservationSection.classList.add("hidden")
             break;
+
+        case 2:
+        homeSection.classList.add("hidden")
+
+        lodgingSection.classList.add("hidden")
+        userSection.classList.remove("hidden")
+        reservationSection.classList.add("hidden")
+        break;
+
+        case 3:
+
+        homeSection.classList.add("hidden")
+    
+        lodgingSection.classList.add("hidden")
+        userSection.classList.add("hidden")
+        reservationSection.classList.remove("hidden")
+        break;
     }
 }
-*/
 
+/*
 function switchHomeTab(e) {
     e.preventDefault()
 
@@ -67,12 +135,15 @@ function switchHomeTab(e) {
     
     //lodgingSection.classList.remove("selected-tab")
     lodgingSection.classList.add("hidden")
+
+
 }
 
 function switchLodgingTab(e) {
     e.preventDefault()
 
     console.log("SKRRRRRR")
+    //showModal("Erreur", "Echec lors de la modification du logement", true)
     const homeSection = document.getElementById("home-section")
     const lodgingSection = document.getElementById("lodging-section")
 
@@ -82,6 +153,37 @@ function switchLodgingTab(e) {
     //lodgingSection.classList.add("selected-tab")
     lodgingSection.classList.remove("hidden")
 }
+
+function switchLodgingTab(e) {
+    e.preventDefault()
+
+    console.log("SKRRRRRR")
+    //showModal("Erreur", "Echec lors de la modification du logement", true)
+    const homeSection = document.getElementById("home-section")
+    const lodgingSection = document.getElementById("lodging-section")
+
+    //homeSection.classList.remove("selected-tab")
+    homeSection.classList.add("hidden")
+    
+    //lodgingSection.classList.add("selected-tab")
+    lodgingSection.classList.remove("hidden")
+}
+
+function switchLodgingTab(e) {
+    e.preventDefault()
+
+    console.log("SKRRRRRR")
+    //showModal("Erreur", "Echec lors de la modification du logement", true)
+    const homeSection = document.getElementById("home-section")
+    const lodgingSection = document.getElementById("lodging-section")
+
+    //homeSection.classList.remove("selected-tab")
+    homeSection.classList.add("hidden")
+    
+    //lodgingSection.classList.add("selected-tab")
+    lodgingSection.classList.remove("hidden")
+}
+*/
 
 function addLodging(e) {
     e.preventDefault()
@@ -93,13 +195,21 @@ function addLodging(e) {
 
     const selectedColor = document.querySelector('input[name="drone"]:checked').value;
     var selectedOptions = []
-    var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+    //var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+    const tvCheckbox = document.getElementById("tv-opt")
+    const internetCheckbox = document.getElementById("internet-opt")
 
-    for (var i = 0; i < checkboxes.length; i++) {
-    selectedOptions.push(checkboxes[i].value)
+    if(tvCheckbox.checked)
+    {
+        selectedOptions.push({id: "tv"})
     }
 
-    if(enteredLodgingsData.nom  !== ""){
+    if(internetCheckbox.checked)
+    {
+        selectedOptions.push({id: "internet"})
+    }
+
+    if(enteredLodgingsData.nom  !== "") {
         // On ajoute le nouvel élement à la liste
         //lodgings.push(enteredLodgingsData)
         //console.log(lodgings)
@@ -115,6 +225,7 @@ function addLodging(e) {
         postData("api/logements/", mapData).then((data) => {
             console.log(data); // JSON data parsed by `data.json()` call
             showAllLodgings()
+            showModal("Nouveau logement", `Le logement ${mapData.name} a été ajouté avec succès !`, false)
         });
     }
 }
@@ -145,12 +256,16 @@ function showAllLodgings() {
            const newColors = {
             Huey: document.createElement("input"),
             Dewey: document.createElement("input"),
-            Saumon: document.createElement("input")
+            Salmon: document.createElement("input")
            }
 
            const newOptions = {
             TV: document.createElement("input"),
             Internet: document.createElement("input"),
+            }
+
+            const newAvailability = {
+                IsAvailable: document.createElement("input")
             }
    
            const newButtons = {
@@ -173,9 +288,14 @@ function showAllLodgings() {
                document.getElementById("allLodgings").appendChild(newDiv);
            }
 
+           const newDivContainer = document.createElement("div")
+           newDivContainer.classList.add("flex-col")
+
            for(const [key, value] of Object.entries(newColors))
            {
-            const newDivContainer = document.createElement("div")
+
+            const newDivContainerSub = document.createElement("div")
+
 
             // D'abord le label
                const label = document.createElement("label");
@@ -215,33 +335,36 @@ function showAllLodgings() {
                 newDivColor.classList.add("dewey");
                }
 
-               if(key === "Saumon")
+               if(key === "Salmon")
                {
-                label.setAttribute("for","saumon");
-                label.textContent = "Saumon"
+                label.setAttribute("for","salmon");
+                label.textContent = "Salmon"
 
-                value.setAttribute("id", "saumon");
+                value.setAttribute("id", "salmon");
                 value.setAttribute("type", "radio");
-                value.setAttribute("value", "saumon");
+                value.setAttribute("value", "salmon");
 
-                if(lodging.colorId === "saumon")
+                if(lodging.colorId === "salmon")
                     value.checked = true;
                 
                 newDivColor.classList.add("radio-btn");
-                newDivColor.classList.add("saumon");
+                newDivColor.classList.add("salmon");
                }
 
                value.setAttribute("name", `radiogroup-${lodging.id}`);
    
-                newDivContainer.appendChild(newDivColor)
-                newDivContainer.appendChild(value)
+                newDivContainerSub.appendChild(newDivColor)
+                newDivContainerSub.appendChild(value)
                 
                 //le nom des couleurs
                 //newDivContainer.appendChild(label)
 
-               newDiv.appendChild(newDivContainer)
-               document.getElementById("allLodgings").appendChild(newDiv);
+               newDivContainer.appendChild(newDivContainerSub)
+
            }
+
+           newDiv.appendChild(newDivContainer)
+           document.getElementById("allLodgings").appendChild(newDiv);
 
            for(const [key, value] of Object.entries(newOptions))
            {
@@ -285,18 +408,52 @@ function showAllLodgings() {
                         value.checked = true;
                     }
 
-
                 });
-
           
                }
 
-    
                 newDivPreferences.appendChild(label)
                 newDivPreferences.appendChild(value)
 
                newDiv.appendChild(newDivPreferences)
                document.getElementById("allLodgings").appendChild(newDiv);
+           }
+
+           for(const [key, value] of Object.entries(newAvailability))
+           {
+            const newDivAvailability = document.createElement("div")
+
+            // D'abord le label
+               const label = document.createElement("label");
+               //label.setAttribute("for","availability");
+               label.classList.add("switch")
+               //label.textContent = "Disponible"
+
+            // Ensuite on crée sa checkbox
+               value.setAttribute("type", "checkbox");
+               value.setAttribute("id", `Checkbox${key}OfLodging-${lodging.id}`)
+
+               const span = document.createElement("span")
+               span.classList.add("slider")
+               span.classList.add("round")
+
+               //on regarde l"état de la checkbox
+               value.checked = lodging.isAvailable;
+
+                label.appendChild(value)
+                label.appendChild(span)
+    
+                //newDivPreferences.appendChild(label)
+                //newDivPreferences.appendChild(value)
+
+                const spanTitle = document.createElement("span")
+                spanTitle.innerHTML = "Disponibilité"
+
+                newDivAvailability.appendChild(spanTitle)
+                newDivAvailability.appendChild(label)
+
+               newDiv.appendChild(newDivAvailability)
+               
            }
 
               
@@ -309,6 +466,8 @@ function showAllLodgings() {
    
                newDiv.appendChild(value)
            }
+
+           document.getElementById("allLodgings").appendChild(newDiv);
    
            updateOrDeleteLodging();
        })
@@ -320,6 +479,153 @@ function showAllLodgings() {
     });
 
 }
+
+function showAllUsers() {
+    // url (required), options (optional)
+fetch('api/users/', {
+    method: 'get'
+}).then(async (response) => {
+
+    // On retrouve les logements
+   users = await response.json()
+
+   console.log(users)
+
+   users.forEach(element => {
+    console.log(element)
+   });
+
+   document.getElementById("allUsers").innerHTML = "";
+   users.forEach(user => {
+
+        const newDiv = document.createElement("div")
+
+       const newInputs = {
+           id: document.createElement("input"),
+           username: document.createElement("input"),
+           email: document.createElement("input"),
+           isAdmin: document.createElement("input")
+       }
+
+       const newButtons = {
+        Supprimer: document.createElement("input"),
+        Modifier: document.createElement("input")
+    }
+
+       newDiv.classList.add("list-item")
+
+       for(const [key, value] of Object.entries(newInputs))
+       {
+           value.setAttribute("type", "text");
+           value.setAttribute("id", `${key}OfUser-${user.id}`)
+
+           key === "id" && value.setAttribute("value", user.id)
+           key === "username" && value.setAttribute("value", user.username)
+           key === "email" && value.setAttribute("value", user.email)
+           key === "isAdmin" && value.setAttribute("value", user.isAdmin)
+
+           newDiv.appendChild(value)
+       }
+
+          
+       for(const [key, value] of Object.entries(newButtons))
+       {
+           value.setAttribute("type", "button");
+           value.setAttribute("class", key);
+           value.setAttribute("id", `Button${key}Of-${user.id}`);
+           value.setAttribute("value", key);
+
+           //newDiv.appendChild(value)
+       }
+
+       document.getElementById("allUsers").appendChild(newDiv);
+
+       //updateOrDeleteLodging();
+   })
+
+})
+.catch(function(err) {
+    // Error :(
+    console.log(err)
+});
+
+}
+
+function showAllReservations() {
+    // url (required), options (optional)
+fetch('api/reservations/', {
+    method: 'get'
+}).then(async (response) => {
+
+    // On retrouve les logements
+   reservations = await response.json()
+
+   console.log(reservations)
+
+   reservations.forEach(element => {
+    console.log(element)
+   });
+
+   document.getElementById("allReservations").innerHTML = "";
+   reservations.forEach(async reservation => {
+
+        const newDiv = document.createElement("div")
+
+        const newInputs = {
+           id: document.createElement("input"),
+           checkInDate: document.createElement("input"),
+           checkOutDate: document.createElement("input"),
+           userId: document.createElement("input"),
+           lodgingId: document.createElement("input")
+       }
+
+       const newButtons = {
+        Supprimer: document.createElement("input"),
+        Modifier: document.createElement("input")
+    }
+
+       newDiv.classList.add("list-item")
+
+       for(const [key, value] of Object.entries(newInputs))
+       {
+           value.setAttribute("type", "text");
+           value.setAttribute("id", `${key}OfReservation-${reservation.id}`)
+
+           key === "id" && value.setAttribute("value", reservation.id)
+           key === "checkInDate" && value.setAttribute("value", reservation.checkInDate)
+           key === "checkOutDate" && value.setAttribute("value", reservation.checkOutDate)
+           key === "userId" && value.setAttribute("value", reservation.userId)
+           key === "lodgingId" && value.setAttribute("value", reservation.lodgingId)
+           //key === "lodgingId" && value.setAttribute("value", await getLodgingNameById(reservation.lodgingId))
+
+           newDiv.appendChild(value)
+
+       }
+
+          
+       for(const [key, value] of Object.entries(newButtons))
+       {
+           value.setAttribute("type", "button");
+           value.setAttribute("class", key);
+           value.setAttribute("id", `Button${key}Of-${reservation.id}`);
+           value.setAttribute("value", key);
+
+           //newDiv.appendChild(value)
+       }
+
+       document.getElementById("allReservations").appendChild(newDiv);
+
+       //updateOrDeleteLodging();
+   })
+
+})
+.catch(function(err) {
+    // Error :(
+    console.log(err)
+});
+
+}
+
 
 function deleteLodging(id) {
     console.log("Delete Lodging")
@@ -338,6 +644,7 @@ function deleteLodging(id) {
             deleteData(`api/logements/${buttonId}`).then((data) => {
                 console.log(data); // JSON data parsed by `data.json()` call
                 showAllLodgings()
+                showModal("Suppression de logement", `Le logement ${lodging.name} a correctement été supprimé ! `, false)
             });
 
         }
@@ -383,7 +690,9 @@ function editLodging(id) {
         "Internet": internetOption
     }
 
-    console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs")
+    const isAvailable = document.getElementById(`CheckboxIsAvailableOfLodging-${buttonId}`).checked
+
+    //console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs")
     console.log(listOptions)
     console.log(newColorInput.value) 
     lodgings.forEach((lodging) => {
@@ -394,13 +703,15 @@ function editLodging(id) {
             //lodging.color = newInputs.color;
             //lodging.options = newInputs.options;
 
-            putData(`api/logements/${buttonId}`, { name: newInputs.nom, colorId: newColorInput.value, options: listOptions }).then((data) => {
+            putData(`api/logements/${buttonId}`, { name: newInputs.nom, colorId: newColorInput.value, options: listOptions, isAvailable: isAvailable }).then((data) => {
                 console.log("ACT77777")
                 console.log(options)
                 console.log(data); // JSON data parsed by `data.json()` call
 
                 // On Actualise dans le then()
                 showAllLodgings();
+
+                showModal("Modification de logement", `Le logement ${lodging.name} a été modifié avec succès !`, false)
             });
         }
     })
@@ -463,7 +774,6 @@ async function putData(url = "", data = {}) {
       },
       redirect: "follow", // manual, *follow, error
       referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(data), // body data type must match "Content-Type" header
     });
     return response.json(); // parses JSON response into native JavaScript objects
   }
@@ -486,3 +796,13 @@ async function deleteData(url = "", data = {}) {
     });
     return response.json(); // parses JSON response into native JavaScript objects
   }
+
+
+async function getLodgingNameById(lodgingId) {
+    let url = `http://localhost:3001/api/logements/${lodgingId}`
+    getData(url).then((data) => {
+        console.log("gouzigouza")
+        console.log(data.name)
+        return data.name
+    })
+}
