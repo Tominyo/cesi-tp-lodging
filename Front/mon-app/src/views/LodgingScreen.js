@@ -1,0 +1,322 @@
+import React, {useState, useEffect} from 'react'
+import { Card, CardContent, Typography, Grid, Box, Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import SendIcon from '@mui/icons-material/Send';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import DomainDisabledIcon from '@mui/icons-material/DomainDisabled';
+import { OptionsToString, putData } from '../utils/Utils';
+import CircularProgress from '@mui/material/CircularProgress';
+import { AuthContext, UserContext } from '../App';
+
+export default function LodgingScreen(props) {
+
+  const { isLogin, isAdmin } = React.useContext(AuthContext);
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [lodging, setLodging] = useState(null);
+  const [open, setOpen] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [severity, setSeverity] = useState("success")
+
+  const [stateIsAdmin, setStateIsAdmin] = isAdmin;
+  const [stateIsLogin, setStateIsLogin] = isLogin;
+  
+  const navigate = useNavigate();
+  const params = useParams();
+
+  let timer
+
+  const onBackClicked = () => {
+    navigate(-1)
+  }
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
+  const snackbar = (text) => {
+
+    return(
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {text}
+        </Alert>
+    </Snackbar>
+    )
+  }
+
+
+  useEffect(() => {
+    let headers = new Headers();
+
+    //headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    //headers.append('Authorization', 'Basic ' + base64.encode(username + ":" +  password));
+    headers.append('Origin','http://localhost:3001');
+    //headers.append('Access-Control-Allow-Origin', 'http://localhost:3001');
+    //headers.append('Access-Control-Allow-Credentials', 'true');
+    //https://api.publicapis.org/entries
+
+    fetch(`http://localhost:3001/api/logements/${params.id}`,{
+        mode: 'cors',
+        credentials: 'include',
+        method: 'GET',
+        headers: headers
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        //console.log(result)
+       setLodging(result)
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+     
+      }
+    )
+
+}, [])
+
+const checkLodgingAvailability = async (lodging) => {
+  let headers = new Headers();
+
+    //headers.append('Content-Type', 'application/json');
+    //headers.append('Accept', 'application/json');
+    //headers.append('Authorization', 'Basic ' + base64.encode(username + ":" +  password));
+    //headers.append('Origin','http://localhost:3001');
+    headers.append('Access-Control-Allow-Origin', 'http://localhost:3001');
+    headers.append('Access-Control-Allow-Credentials', 'true');
+    //https://api.publicapis.org/entries
+
+    fetch(`http://localhost:3001/api/reservation/${lodging.id}`,{
+        mode: 'cors',
+        credentials: 'include',
+        method: 'GET',
+        headers: headers
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        //console.log(result)
+
+        if(result.userId !== undefined)
+        {
+            //console.log("Le logement est disponible")
+            bookLodging(lodging)
+        }
+        else
+        {
+          //console.log("Le logement n'est plus disponible")
+        }
+
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+     
+      }
+    )
+}
+
+const updateLodging = (lodging) => {
+
+  const url = `http://localhost:3001/api/logements/${lodging.id}`
+  const data = {isAvailable: false }
+
+  setIsLoading(true)
+
+  putData(url, data).then((data) => {
+    setIsLoading(false)
+
+    if(timer == null)
+        {
+            timer = setTimeout(() => {
+                
+                //console.log('This will run after 3 second!')
+                timer = null;
+                refreshPage()
+                
+                const content = `Vous avez réserver le logement ${lodging.name} pour la période du 15/07 à 25/08`
+                showAlert(content)
+
+              }, 1000);
+              return () => clearTimeout(timer);
+        }
+
+});
+}
+
+const bookLodging = () => {
+
+  if(stateIsLogin)
+  {
+    let headers = new Headers();
+
+    //headers.append('Content-Type', 'application/json');
+    //headers.append('Accept', 'application/json');
+    //headers.append('Authorization', 'Basic ' + base64.encode(username + ":" +  password));
+    //headers.append('Origin','http://localhost:3001');
+    headers.append('Access-Control-Allow-Origin', 'http://localhost:3001');
+    headers.append('Access-Control-Allow-Credentials', 'true');
+    //https://api.publicapis.org/entries
+
+    fetch(`http://localhost:3001/api/reservation`,{
+        mode: 'cors',
+        credentials: 'include',
+        method: 'POST',
+        headers: headers
+    })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        //console.log(result)
+        updateLodging(lodging)
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+     
+      }
+    )
+  }
+  else {
+    const content = `Vous devez être connecter afin de pouvoir réserver un logement !`
+    showAlert(content, "warning")
+  }
+
+}
+
+const showAlert = (content, type="success") => {
+
+  setAlertMessage(content)
+  setSeverity(type)
+  handleClick()
+}
+
+
+  return (
+    <>
+
+    <main>
+      {
+        lodging 
+        ? 
+        <div className='card-container'>
+              <Card variant="outlined" sx={{ maxWidth: 800, margin: '0 auto', marginTop: 4 }} className='px-10'>
+              <div className='breadcrumb-back-btn' onClick={onBackClicked}><ArrowBackIcon fontSize="large" /></div>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6} md={4}>
+                    {/* Insérez ici votre composant ImageGallery */}
+                    <div className='flex-center'>
+                        <img src="/img/logement-img.jpg" alt="Aperçu de l'appartement" width={250}/>
+
+                        <div style={{height: "100px"}}></div>
+
+                          {
+                            lodging.isAvailable 
+                            ? <Button variant="contained" color="success" endIcon={<SendIcon />} size="large" onClick={() => bookLodging(params.id)}>
+                              Je Réserve !
+                            </Button> 
+
+                            : <Button variant="contained" color='error' endIcon={<DomainDisabledIcon />} size="large" onClick={() => showAlert("Ce logement n'est plus disponible.", "warning")}>
+                            Non Disponible
+                          </Button>
+                          }
+                    </div>
+          
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={8}>
+                    <CardContent>
+                      <Typography variant="h4" component="div" sx={{ marginBottom: 2 }}>
+                        {lodging.name}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+                        Type de logement: T2
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+                        Options: {lodging.options && OptionsToString(lodging.options)}
+                      </Typography>
+                      {/* Insérez ici votre composant Availability */}
+                      {/* Insérez ici votre composant LocationMap */}
+                      <Typography variant="body1" sx={{ marginTop: 2 }}>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat velit at arcu mattis, 
+                      id cursus elit eleifend. Cras mollis in nisl vel rhoncus. Vestibulum congue non sapien quis aliquam. 
+                      Nam mollis dapibus purus, vitae faucibus tortor feugiat sit amet. Cras cursus vitae tortor vel ultricies. 
+                      Vestibulum eget venenatis turpis. Donec maximus, velit et viverra gravida, nulla neque fringilla sapien, 
+                      eget suscipit dolor metus et ante. Cras rhoncus ligula neque. Quisque id tortor pulvinar, 
+                      vulputate arcu eu, pellentesque augue. Sed sollicitudin orci sed dolor placerat dictum. In elit nibh, 
+                      ullamcorper vitae magna sed, pellentesque accumsan diam. Donec luctus eget urna vitae suscipit.
+                       </Typography>
+                    </CardContent>
+                  </Grid>
+                </Grid>
+              </Card>
+        </div>
+
+        :
+        <></>
+
+      }
+      
+
+      {
+        isLoading 
+        ?
+        <Box sx={{ display: 'flex' }}>
+          <CircularProgress />
+        </Box>
+        
+        : <></>
+      }
+
+
+  );
+
+        <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+              {alertMessage}
+            </Alert>
+        </Snackbar>
+
+    </main>
+
+</>
+  )
+}
+
+
+function refreshPage() {
+  window.location.reload(false);
+}
