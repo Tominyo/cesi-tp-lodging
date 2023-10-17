@@ -1,0 +1,61 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Admin - Gestion des Logements</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div>
+      <a href="http://localhost:3000">Voir le site</a>
+    </div>
+    <form>
+        <input type="text" placeholder="Nom" id="nom"/>
+        <fieldset>
+            <legend>Sélectionnez une couleur:</legend>
+          
+            <div>
+              <div class="radio-btn huey"></div>
+              <input type="radio" id="huey" name="drone" value="huey" checked />
+              <label for="huey">Huey</label>
+
+            </div>
+          
+            <div>
+              <input type="radio" id="dewey" name="drone" value="dewey" />
+              <label for="dewey">Dewey</label>
+              <div class="radio-btn dewey"></div>
+            </div>
+          
+            <div>
+              <input type="radio" id="saumon" name="drone" value="saumon" />
+              <label for="saumon">Saumon</label>
+              <div class="radio-btn saumon"></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Selectionnez des options:</legend>
+          
+            <div class="preference">
+                <label for="tv-opt">TV</label>
+                <input type="checkbox" name="tv-opt" id="tv-opt"   />
+                
+            </div>
+    
+            <div class="preference">
+                <label for="internet-opt">Internet</label>
+                <input type="checkbox" name="internet-opt" id="internet-opt" />
+                
+            </div>
+          </fieldset>
+            
+        </div>
+        <button id="validate">Ajouter</button>
+    </form>
+
+    <div id="allLodgings"></div>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

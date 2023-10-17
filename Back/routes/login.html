@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<head>
+    <title>My Website</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-page">
+          <div class="form">
+            <form id="form-container" action="http://localhost:3001/auth/login" method="post">
+                  <div class="login-form">
+                    <input type="email" placeholder="E-mail" id="email" name="email">
+                    <input type="password" placeholder="Password" id="password" name="password">
+                    <button type ="submit">Login</button>
+                    <button id="show-register"><p class="message">Not registered? Create an Account</p></button>
+
+                  </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <!--Footer-->
+      <footer id="footer">
+        <div class="createdBy">
+          <p>
+            Coded by <a href="https://urukm.com"><span>URUKM</span></a>
+          </p>
+        </div>
+      
+      </footer>
+
+      <script src="/js/login.js"></script>
+</body>
+
+</html>
