@@ -54,7 +54,7 @@ export default function HomeScreen(props) {
     
     
     const onRadioValueChange = (event, value) => {
-      console.log(value)
+      //console.log(value)
       setFilter(value)
     }
 
@@ -69,7 +69,7 @@ export default function HomeScreen(props) {
               if(timer == null)
               {
                   timer = setTimeout(() => {
-                      console.log('This will run after 3 second!')
+                      //console.log('This will run after 3 second!')
                       setIsLoading(false);
                       timer = null;
                     }, 3000);
@@ -98,7 +98,7 @@ export default function HomeScreen(props) {
         .then(res => res.json())
         .then(
           (result) => {
-            console.log(result)
+            //console.log(result)
            setLodgings(result)
           },
           // Note: it's important to handle errors here

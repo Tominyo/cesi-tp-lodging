@@ -142,7 +142,7 @@ function switchHomeTab(e) {
 function switchLodgingTab(e) {
     e.preventDefault()
 
-    console.log("SKRRRRRR")
+    //console.log("SKRRRRRR")
     //showModal("Erreur", "Echec lors de la modification du logement", true)
     const homeSection = document.getElementById("home-section")
     const lodgingSection = document.getElementById("lodging-section")
@@ -157,7 +157,7 @@ function switchLodgingTab(e) {
 function switchLodgingTab(e) {
     e.preventDefault()
 
-    console.log("SKRRRRRR")
+    //console.log("SKRRRRRR")
     //showModal("Erreur", "Echec lors de la modification du logement", true)
     const homeSection = document.getElementById("home-section")
     const lodgingSection = document.getElementById("lodging-section")
@@ -172,7 +172,7 @@ function switchLodgingTab(e) {
 function switchLodgingTab(e) {
     e.preventDefault()
 
-    console.log("SKRRRRRR")
+    //console.log("SKRRRRRR")
     //showModal("Erreur", "Echec lors de la modification du logement", true)
     const homeSection = document.getElementById("home-section")
     const lodgingSection = document.getElementById("lodging-section")
@@ -212,7 +212,7 @@ function addLodging(e) {
     if(enteredLodgingsData.nom  !== "") {
         // On ajoute le nouvel élement à la liste
         //lodgings.push(enteredLodgingsData)
-        //console.log(lodgings)
+        ////console.log(lodgings)
 
         let mapData = {
             name: enteredLodgingsData.nom,
@@ -220,10 +220,10 @@ function addLodging(e) {
             options: selectedOptions
         }
 
-        console.log(mapData)
+        //console.log(mapData)
 
         postData("api/logements/", mapData).then((data) => {
-            console.log(data); // JSON data parsed by `data.json()` call
+            //console.log(data); // JSON data parsed by `data.json()` call
             showAllLodgings()
             showModal("Nouveau logement", `Le logement ${mapData.name} a été ajouté avec succès !`, false)
         });
@@ -239,10 +239,10 @@ function showAllLodgings() {
         // On retrouve les logements
        lodgings = await response.json()
 
-       console.log(lodgings)
+       //console.log(lodgings)
 
        lodgings.forEach(element => {
-        console.log(element)
+        //console.log(element)
        });
 
        document.getElementById("allLodgings").innerHTML = "";
@@ -387,8 +387,8 @@ function showAllLodgings() {
                value.setAttribute("type", "checkbox");
                value.setAttribute("id", `Checkbox${key}OfLodging-${lodging.id}`)
             
-               console.log("HELOOOOOOOo")
-               console.log(lodging.options)
+               //console.log("HELOOOOOOOo")
+               //console.log(lodging.options)
                    
                if(lodging.options.length > 0)
                {
@@ -396,14 +396,14 @@ function showAllLodgings() {
 
                     if(key === "TV")
                     {
-                        console.log("option.id:" + option.id)
+                        //console.log("option.id:" + option.id)
                         if(option.id === "tv")
                         value.checked = true;
                     }
 
                     if(key === "Internet")
                     {
-                        console.log("option.id:" + option.id)
+                        //console.log("option.id:" + option.id)
                         if(option.id === "internet")
                         value.checked = true;
                     }
@@ -475,7 +475,7 @@ function showAllLodgings() {
     })
    .catch(function(err) {
         // Error :(
-        console.log(err)
+        //console.log(err)
     });
 
 }
@@ -489,10 +489,10 @@ fetch('api/users/', {
     // On retrouve les logements
    users = await response.json()
 
-   console.log(users)
+   //console.log(users)
 
    users.forEach(element => {
-    console.log(element)
+    //console.log(element)
    });
 
    document.getElementById("allUsers").innerHTML = "";
@@ -546,7 +546,7 @@ fetch('api/users/', {
 })
 .catch(function(err) {
     // Error :(
-    console.log(err)
+    //console.log(err)
 });
 
 }
@@ -560,10 +560,10 @@ fetch('api/reservations/', {
     // On retrouve les logements
    reservations = await response.json()
 
-   console.log(reservations)
+   //console.log(reservations)
 
    reservations.forEach(element => {
-    console.log(element)
+    //console.log(element)
    });
 
    document.getElementById("allReservations").innerHTML = "";
@@ -621,28 +621,28 @@ fetch('api/reservations/', {
 })
 .catch(function(err) {
     // Error :(
-    console.log(err)
+    //console.log(err)
 });
 
 }
 
 
 function deleteLodging(id) {
-    console.log("Delete Lodging")
+    //console.log("Delete Lodging")
     //const buttonId = id.charAt(id.length - 1)
     const buttonId = id.split('-')[1]
 
     lodgings.forEach((lodging) => {
         //const userPositionInArray = lodgings.indexOf(lodging);    
         //lodging.id === parseInt(id) && lodgings.splice(userPositionInArray, 1);
-        console.log("SKRRRRTss")
-        console.log(lodging.id)
-        console.log(id.charAt(id.length - 1))
+        //console.log("SKRRRRTss")
+        //console.log(lodging.id)
+        //console.log(id.charAt(id.length - 1))
         if(lodging.id === parseInt(buttonId))
         {
-            console.log("REUSSI")
+            //console.log("REUSSI")
             deleteData(`api/logements/${buttonId}`).then((data) => {
-                console.log(data); // JSON data parsed by `data.json()` call
+                //console.log(data); // JSON data parsed by `data.json()` call
                 showAllLodgings()
                 showModal("Suppression de logement", `Le logement ${lodging.name} a correctement été supprimé ! `, false)
             });
@@ -658,8 +658,8 @@ function editLodging(id) {
     //const buttonId = id.charAt(id.length - 1)
     const buttonId = id.split('-')[1]
 
-    console.log("Edit Lodging")
-    console.log(`NomOfLodging-${buttonId}`)
+    //console.log("Edit Lodging")
+    //console.log(`NomOfLodging-${buttonId}`)
 
     const newInputs = {
         nom: document.getElementById(`NomOfLodging-${buttonId}`).value,
@@ -692,9 +692,9 @@ function editLodging(id) {
 
     const isAvailable = document.getElementById(`CheckboxIsAvailableOfLodging-${buttonId}`).checked
 
-    //console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs")
-    console.log(listOptions)
-    console.log(newColorInput.value) 
+    ////console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs")
+    //console.log(listOptions)
+    //console.log(newColorInput.value) 
     lodgings.forEach((lodging) => {
 
         if(lodging.id === parseInt(buttonId))
@@ -704,9 +704,9 @@ function editLodging(id) {
             //lodging.options = newInputs.options;
 
             putData(`api/logements/${buttonId}`, { name: newInputs.nom, colorId: newColorInput.value, options: listOptions, isAvailable: isAvailable }).then((data) => {
-                console.log("ACT77777")
-                console.log(options)
-                console.log(data); // JSON data parsed by `data.json()` call
+                //console.log("ACT77777")
+                //console.log(options)
+                //console.log(data); // JSON data parsed by `data.json()` call
 
                 // On Actualise dans le then()
                 showAllLodgings();
@@ -801,8 +801,8 @@ async function deleteData(url = "", data = {}) {
 async function getLodgingNameById(lodgingId) {
     let url = `http://localhost:3001/api/logements/${lodgingId}`
     getData(url).then((data) => {
-        console.log("gouzigouza")
-        console.log(data.name)
+        //console.log("gouzigouza")
+        //console.log(data.name)
         return data.name
     })
 }

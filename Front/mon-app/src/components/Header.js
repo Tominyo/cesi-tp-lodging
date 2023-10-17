@@ -24,7 +24,7 @@ const Header = () => {
     headers.append('Access-Control-Allow-Credentials', 'true');
     //https://api.publicapis.org/entries
 
-    console.log("SISI")
+    //console.log("SISI")
     fetch(`http://localhost:3001/auth/logout`,{
         mode: 'cors',
         credentials: 'include',
@@ -34,7 +34,7 @@ const Header = () => {
     .then(res => res.json())
     .then(
       (result) => {
-        console.log(result)
+        //console.log(result)
         setStateIsLogin(false)
         setStateIsAdmin(false)
         refreshPage()

@@ -30,8 +30,8 @@ exports.checkJWT = async (req, res, next) => {
             }
         });
     } else {
-        console.log("CHECKJWT BABABYYYY")
-        console.log(req.headers)
+        //console.log("CHECKJWT BABABYYYY")
+        //console.log(req.headers)
         res.redirect("/login")
         return res.status(401).json('token_required');
     }

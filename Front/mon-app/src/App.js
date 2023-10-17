@@ -121,7 +121,7 @@ function App() {
     .then(res => res.json())
     .then(
       (result) => {
-        console.log(result)
+        //console.log(result)
        setCurrentUser(result)
       },
       // Note: it's important to handle errors here

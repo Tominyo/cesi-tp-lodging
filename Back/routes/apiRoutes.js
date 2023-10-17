@@ -17,15 +17,15 @@ router.post('/api/logements', async (req, res) => {
   try {
     const { name, colorId, options } = req.body;
 
-    console.log(name)
-    console.log(colorId)
-    console.log(options)
+    //console.log(name)
+    //console.log(colorId)
+    //console.log(options)
     let optionsList = []
 
     options.forEach(element => {
       
       optionsList.push({id: "tv"})
-      console.log(element)
+      //console.log(element)
     });
 
     let options2 = [
@@ -59,13 +59,13 @@ router.put('/api/logements/:id', async (req, res) => {
     "isActive": false
   }
 
-  //console.log("options belek: ")
-  //console.log(options)
+  ////console.log("options belek: ")
+  ////console.log(options)
 
   if(name !== undefined && colorId !== undefined && options !== undefined)
   {
 
-    console.log("modification par un admin")
+    //console.log("modification par un admin")
     try {
       const updatedLodging = await prisma.lodging.update({
         where: { id: Number(id) },
@@ -81,13 +81,13 @@ router.put('/api/logements/:id', async (req, res) => {
       });
       res.json(updatedLodging);
     } catch (error) {
-      console.log("VOICI LERREUR")
+      //console.log("VOICI LERREUR")
       console.error(error);
       res.status(500).json({ error: 'Erreur lors de la modification du logement' });
     }
   } else if(isAvailable !== undefined) {
 
-    console.log("modification par le serveur")
+    //console.log("modification par le serveur")
 
     try {
       const updatedLodging = await prisma.lodging.update({
@@ -98,7 +98,7 @@ router.put('/api/logements/:id', async (req, res) => {
       });
       res.json(updatedLodging);
     } catch (error) {
-      console.log("VOICI LERREUR")
+      //console.log("VOICI LERREUR")
       console.error(error);
       res.status(500).json({ error: 'Erreur lors de la modification du logement' });
     }
@@ -338,8 +338,8 @@ router.post('/api/reservation', async (req, res) => {
     let checkOutDate = new Date()
     let userId = 1
     let lodgingId = 2
-    //console.log(userID)
-    //console.log(lodgingID)
+    ////console.log(userID)
+    ////console.log(lodgingID)
 
     const reservation = await prisma.reservation.create({
       data: {
@@ -383,11 +383,11 @@ router.post('/auth/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
     // Vérifier si le nom d'utilisateur existe déjà
-    console.log(req)
+    //console.log(req)
 
-    console.log(username)
-    console.log(email)
-    console.log(password)
+    //console.log(username)
+    //console.log(email)
+    //console.log(password)
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {

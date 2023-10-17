@@ -94,7 +94,7 @@ export default function LodgingScreen(props) {
     .then(res => res.json())
     .then(
       (result) => {
-        console.log(result)
+        //console.log(result)
        setLodging(result)
       },
       // Note: it's important to handle errors here
@@ -127,16 +127,16 @@ const checkLodgingAvailability = async (lodging) => {
     .then(res => res.json())
     .then(
       (result) => {
-        console.log(result)
+        //console.log(result)
 
         if(result.userId !== undefined)
         {
-            console.log("Le logement est disponible")
+            //console.log("Le logement est disponible")
             bookLodging(lodging)
         }
         else
         {
-          console.log("Le logement n'est plus disponible")
+          //console.log("Le logement n'est plus disponible")
         }
 
       },
@@ -163,7 +163,7 @@ const updateLodging = (lodging) => {
         {
             timer = setTimeout(() => {
                 
-                console.log('This will run after 3 second!')
+                //console.log('This will run after 3 second!')
                 timer = null;
                 refreshPage()
                 
@@ -200,7 +200,7 @@ const bookLodging = () => {
     .then(res => res.json())
     .then(
       (result) => {
-        console.log(result)
+        //console.log(result)
         updateLodging(lodging)
       },
       // Note: it's important to handle errors here

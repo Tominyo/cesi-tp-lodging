@@ -13,19 +13,19 @@ module.exports.login_post = async (req, res, next) => {
         const { email, password } = req.body;
         const email2 = "harry.potter@mail.com"
         const password2 = "1234"
-        console.log(email)
-        console.log(password)
+        //console.log(email)
+        //console.log(password)
         // Rechercher l'utilisateur par nom d'utilisateur
         const user = await prisma.user.findUnique({ where: { email: email } });
         if (!user) {
           //res.status(401).json({ error: 'Nom d\'utilisateur ou mot de passe incorrect (1)' });
-          console.log('Nom d\'utilisateur ou mot de passe incorrect (1)')
+          //console.log('Nom d\'utilisateur ou mot de passe incorrect (1)')
           return res.redirect("http://localhost:3000/login?error=wrong-id");
         }
     
         // Comparer le mot de passe haché
         const passwordMatch = await bcrypt.compare(password, user.password);
-        console.log(passwordMatch)
+        //console.log(passwordMatch)
         
         
         if(passwordMatch)
@@ -55,13 +55,13 @@ module.exports.login_post = async (req, res, next) => {
 
           //res.status(200).json('auth_ok');
           res.redirect("http://localhost:3000/");
-          console.log("Connexion réussi.");
+          //console.log("Connexion réussi.");
         }
         else
         {
           //window.alert("Nom d\'utilisateur ou mot de passe incorrect");
           //res.status(401).json({ error: 'Nom d\'utilisateur ou mot de passe incorrect (2)' });
-          console.log('Nom d\'utilisateur ou mot de passe incorrect (2)')
+          //console.log('Nom d\'utilisateur ou mot de passe incorrect (2)')
           return res.redirect("http://localhost:3000/login?error=wrong-id");
         }
     
@@ -71,12 +71,12 @@ module.exports.login_post = async (req, res, next) => {
       
           const passwordMatch = bcrypt.compare(user.password, hash, function(err, result) {
               if (err) { throw (err); }
-              console.log(result);
+              //console.log(result);
     
               if (!passwordMatch) {
-                console.log("password = " + password2)
-                console.log("passwordHash = " + user.password)
-                console.log("passwordMatch = " + passwordMatch)
+                //console.log("password = " + password2)
+                //console.log("passwordHash = " + user.password)
+                //console.log("passwordMatch = " + passwordMatch)
                 return res.status(401).json({ error: 'Nom d\'utilisateur ou mot de passe incorrect (2)' });
               }
           
@@ -96,7 +96,7 @@ module.exports.login_post = async (req, res, next) => {
     
           res.json({ token });
     
-          console.log("Connexion réussi.");
+          //console.log("Connexion réussi.");
         }
       */
       

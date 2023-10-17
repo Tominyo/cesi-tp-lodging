@@ -20,10 +20,10 @@ const [filteredData, setFilteredData] = useState([])
 const navigate = useNavigate()
 
   useEffect(() => {
-    console.log("useEffect TableCUstom")
-    console.log(props.filter)
-    console.log(props.data)
-    console.log(props.data.filter((item) => item.color["id"] == props.filter))
+    //console.log("useEffect TableCUstom")
+    //console.log(props.filter)
+    //console.log(props.data)
+    //console.log(props.data.filter((item) => item.color["id"] == props.filter))
     
     let filteredDataBis = props.data.filter((item) => props.filter == "all" || (item.color["id"] == props.filter) )
     setFilteredData(filteredDataBis)
@@ -52,7 +52,7 @@ const navigate = useNavigate()
                         className='table-elem'
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         onClick={() => {
-                            console.log("CLicked on " + row.name);
+                            //console.log("CLicked on " + row.name);
                             navigate(`lodging/${row.id}`, {"id": row.id,})
                           }
                         }

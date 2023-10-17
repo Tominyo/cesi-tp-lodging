@@ -21,8 +21,8 @@ function List(props) {
         }
         //return the item which contains the user input
         else {
-            console.log("el is :")
-            console.log(el)
+            //console.log("el is :")
+            //console.log(el)
             return el.job.toLowerCase().includes(props.input)
         }
 

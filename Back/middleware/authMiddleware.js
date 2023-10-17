@@ -12,8 +12,8 @@ const checkJWT = async (req, res, next) => {
     if (token) {
         jwt.verify(token, SECRET_KEY, (err, decoded) => {
             if (err) {
-                console.log('token_required 1')
-                console.log(err)
+                //console.log('token_required 1')
+                //console.log(err)
                 
                 res.cookie("jwt", "", { maxAge: 1});
 
@@ -37,9 +37,9 @@ const checkJWT = async (req, res, next) => {
             }
         });
     } else {
-        console.log(req.headers)
+        //console.log(req.headers)
         //res.redirect("/login")
-        console.log('token_required 2')
+        //console.log('token_required 2')
         res.redirect("http://localhost:3000/")
         //return res.status(401).json('token_required');
     }
